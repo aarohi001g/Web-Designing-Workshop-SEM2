@@ -1,0 +1,96 @@
+body {
+            background: linear-gradient(to right, #141E30, #243B55);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+
+        .header {
+            display: inline-block;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #333;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4caf50;
+        }
+
+        .auth-buttons button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+      
+
+        .signup {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .login {
+            background-color: #2a2a2a;
+            color: rgb(249, 243, 243);
+        }
+
+
+
+        .chessboard {
+            width: 480px;
+            height: 480px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            border: 5px solid #333;
+        }
+
+        .square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+        }
+
+        .light {
+            background-color: #f0d9b5;
+        }
+
+        .dark {
+            background-color: #b58863;
+        }
+
+        .square:hover {
+            background-color: yellow;
+            cursor: pointer;
+        }
+
+        .info {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ff9800;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background: #e68900;
+        }
