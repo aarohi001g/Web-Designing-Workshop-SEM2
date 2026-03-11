@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+ <!-- <!DOCTYPE html>
 <html>
 <body>
 
@@ -19,4 +19,21 @@ document.getElementById("pattern").textContent = output;
 </script>
 
 </body>
-</html>
+</html> -->
+
+
+<pre id="pattern"></pre>
+
+<script>
+let n = 5;
+let output = "";
+
+for(let i=n;i>=1;i--){
+    for(let j=1;j<=i;j++){
+        output += "*";
+    }
+    output += "\n";
+}
+
+document.getElementById("pattern").textContent = output;
+</script>
