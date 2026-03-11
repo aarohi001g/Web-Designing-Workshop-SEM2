@@ -1,0 +1,22 @@
+ <!DOCTYPE html>
+<html>
+<body>
+
+<pre id="pattern"></pre>
+
+<script>
+let n = 5;
+let output = "";
+
+for(let i=1;i<=n;i++){
+    for(let j=1;j<=i;j++){
+        output += "*";
+    }
+    output += "\n";
+}
+
+document.getElementById("pattern").textContent = output;
+</script>
+
+</body>
+</html>
