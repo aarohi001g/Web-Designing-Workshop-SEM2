@@ -1,3 +1,6 @@
+ 
+ //simple pyramid pattern
+ 
  <!-- <!DOCTYPE html>
 <html>
 <body>
@@ -22,7 +25,10 @@ document.getElementById("pattern").textContent = output;
 </html> -->
 
 
-<pre id="pattern"></pre>
+
+
+//Inverted pyramid pattern
+<!-- <pre id="pattern"></pre>
 
 <script>
 let n = 5;
@@ -36,4 +42,51 @@ for(let i=n;i>=1;i--){
 }
 
 document.getElementById("pattern").textContent = output;
-</script>
+</script> -->
+
+
+// triangle pattern
+
+<!-- <pre id="pattern"></pre>
+
+<script>
+let n = 4;
+let output = "";
+
+for(let i=1;i<=n;i++){
+    for(let j=1;j<=i;j++){
+        output += "* ";
+    }
+    output += "\n";
+}
+
+document.getElementById("pattern").textContent = output;
+</script> -->
+
+
+
+
+//diamond pattern
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<pre id="pattern"></pre>
+
+<script>
+let n = 5;
+let output = "";
+
+// Upper pyramid
+for(let i = 1; i <= n; i++) {
+
+    for(let j = 1; j <= n-i; j++) {
+        output += " ";
+    }
+
+    for(let k = 1; k <= (2*i-1); k++) {
+        output += "*";
+    }
+
+    output
