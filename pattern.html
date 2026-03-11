@@ -116,7 +116,7 @@ document.getElementById("pattern").textContent = output;
 
 //Number pyramid pattern
 
-<pre id="pattern"></pre>
+<!-- <pre id="pattern"></pre>
 
 <script>
 let n = 4;
@@ -130,7 +130,26 @@ for(let i=1;i<=n;i++){
 }
 
 document.getElementById("pattern").textContent = output;
+</script> -->
+
+
+//alphabet pyramid pattern
+
+
+<pre id="pattern"></pre>
+
+<script>
+let n = 4;
+let output = "";
+
+for(let i=0;i<n;i++){
+    let ch = String.fromCharCode(65 + i);
+
+    for(let j=0;j<=i;j++){
+        output += ch + " ";
+    }
+    output += "\n";
+}
+
+document.getElementById("pattern").textContent = output;
 </script>
-
-
-
