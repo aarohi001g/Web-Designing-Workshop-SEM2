@@ -68,7 +68,7 @@ document.getElementById("pattern").textContent = output;
 
 //diamond pattern
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <body>
 
@@ -110,7 +110,27 @@ document.getElementById("pattern").textContent = output;
 </script>
 
 </body>
-</html>
+</html> -->
+
+
+
+//Number pyramid pattern
+
+<pre id="pattern"></pre>
+
+<script>
+let n = 4;
+let output = "";
+
+for(let i=1;i<=n;i++){
+    for(let j=1;j<=i;j++){
+        output += i + " ";
+    }
+    output += "\n";
+}
+
+document.getElementById("pattern").textContent = output;
+</script>
 
 
 
