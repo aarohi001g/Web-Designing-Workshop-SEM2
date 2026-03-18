@@ -1,24 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Result Calculator</title>
-    <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="container">
-    <h1>Student Grade Calculator</h1>
-    <h2>Enter number of subjects</h2>
-
-    <input type="text" id="name" placeholder="Enter number of subjects">
-
-  
-    <button onclick="calculateResult()">Enter marks</button>
-
-    <div id="result"></div>
+      <div class="container">
+<h2>Student Result Calculator</h2>
+<label>Enter Number of Subjects</label>
+<input type="number" id="subjects" placeholder="Enter Number of Subjects"><br><br>
+<button onclick="calculateResult()">Calculate Result</button>
+<div id="result"></div>
 </div>
-
-<script src="main.jsx"></script>
-
+    <script src="main.js"></script>
+    
 </body>
 </html>
