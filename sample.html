@@ -59,9 +59,20 @@
         // output:
         // {"name":"Aarohi","age":18}
 
-        let jsonstring = '{"name":"Aarohi","age":18}';
-        let studentobj = JSON.parse(jsonstring);
-        console.log(studentobj.name); // Output: Aarohi
+        // let jsonstring = '{"name":"Aarohi","age":18}';
+        // let studentobj = JSON.parse(jsonstring);
+        // console.log(studentobj.name); // Output: Aarohi
+
+
+        let student = {
+            name: "Aarohi",
+            age: 18,
+            course:"CSE"
+        };
+
+        for (let key in student) {
+            console.log(key + ": " + student[key]);
+        }
 
     </script>
 </body>
