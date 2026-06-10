@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipkart Clone - Header & Banners</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f1f2f4;
+            color: #333;
+        }
+
+        /* --- TOP NAV BAR --- */
+        .navbar {
+            background-color: #ffffff;
+            padding: 12px 10%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-tab {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .brand-flipkart {
+            background-color: #ffd814;
+            color: #000;
+        }
+
+        .brand-travel {
+            background-color: #f0f2f5;
+            color: #666;
+        }
+
+        .brand-travel i {
+            color: #ff5a5f;
+        }
+
+        /* --- SEARCH BAR --- */
+        .search-container {
+            flex: 1;
+            margin: 0 40px;
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #717478;
+            font-size: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 11px 16px 11px 48px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f0f5ff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            background-color: #fff;
+            border-color: #2874f0;
+            box-shadow: 0 0 4px rgba(40,116,240,0.2);
+        }
+
+        /* --- NAV RIGHT CONTROLS --- */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .location-select {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .location-select i {
+            color: #000;
+        }
+
+        .location-select span {
+            color: #2874f0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #1f1f1f;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-item:hover {
+            color: #2874f0;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            min-width: 150px;
+            padding: 8px 0;
+            z-index: 200;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* --- CATEGORIES BAR --- */
+        .categories-container {
+            background-color: #fff;
+            margin: 8px 0;
+            padding: 12px 4%;
+            display: flex;
+            justify-content: space-between;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
+        }
+
+        .categories-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for clean look */
+        }
+
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .cat-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #444;
+        }
+
+        /* Custom treatment for the active/focused "For You" item */
+        .cat-item.active .cat-icon-wrapper {
+            background-color: #f0f5ff;
+            border: 1px solid #2874f0;
+            border-radius: 8px;
+            color: #2874f0;
+        }
+
+        .cat-item span {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1f1f1f;
+        }
+
+        .cat-item.active span {
+            color: #2874f0;
+            font-weight: 600;
+        }
+
+        /* --- MAIN EXCLUSIVE BANNER --- */
+        .main-banner {
+            background: linear-gradient(to right, #f6b01e 40%, #ffc633 100%);
+            margin: 0 12px;
+            border-radius: 4px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-left h1 {
+            font-size: 56px;
+            color: #033496;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .banner-left p {
+            font-size: 32px;
+            color: #033496;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .coupon-ticket {
+            background-color: #0052cc;
+            color: white;
+            padding: 24px 40px;
+            border-radius: 16px;
+            border: 3px dashed #fff;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        /* Ticket side cuts */
+        .coupon-ticket::before, .coupon-ticket::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: #f6b01e;
+            border-radius: 50%;
+        }
+        .coupon-ticket::before { left: -12px; transform: translateY(-50%); }
+        .coupon-ticket::after { right: -12px; transform: translateY(-50%); }
+
+        .coupon-ticket h2 {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .coupon-ticket p {
+            font-size: 20px;
+            margin: 4px 0 12px 0;
+            opacity: 0.9;
+        }
+
+        .coupon-badge {
+            background-color: #fff;
+            color: #000;
+            padding: 6px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 18px;
+            display: inline-block;
+        }
+
+        .banner-right-assets {
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+            position: relative;
+            height: 100%;
+        }
+
+        .asset-chair {
+            height: 220px;
+            margin-bottom: 20px;
+            z-index: 2;
+        }
+
+        .asset-dumbbells {
+            height: 70px;
+            position: absolute;
+            right: -20px;
+            bottom: 20px;
+            z-index: 3;
+        }
+
+        /* --- TRIPLE SUB-BANNERS GRID --- */
+        .sub-banners-grid {
+            margin: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr 1fr;
+            gap: 12px;
+        }
+
+        .sub-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            height: 240px;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* Card 1: Adidas */
+        .card-adidas {
+            background: url('https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=600&q=80') no-repeat center center;
+            background-size: cover;
+            color: white;
+        }
+        .card-adidas::before {
+            content: '';
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.4);
+        }
+        .card-content-overlay {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+        }
+        .brand-logo-white {
+            font-size: 28px;
+            font-weight: 800;
+            font-style: italic;
+        }
+        .offer-text-large {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 4px 0;
+        }
+        .partner-bank-tag {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: auto;
+            width: fit-content;
+        }
+
+        /* Card 2: Phone Launch */
+        .card-phone {
+            background-color: #ffffff;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .phone-text-side {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 5;
+        }
+        .epic-sale-badge {
+            background-color: #033496;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            width: fit-content;
+        }
+        .phone-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111;
+        }
+        .phone-launch-time {
+            font-size: 18px;
+            font-weight: 700;
+            color: #d93838;
+        }
+        .phone-sub {
+            font-size: 12px;
+            color: #666;
+        }
+        .phone-image-side {
+            height: 90%;
+            object-fit: contain;
+        }
+
+        /* Card 3: June Epic Sale Live */
+        .card-sale-live {
+            background: linear-gradient(135deg, #ffcc00 0%, #ffaa00 100%);
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+        .live-banner-title {
+            background-color: #033496;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 0 0 8px 8px;
+            font-weight: 800;
+            font-size: 14px;
+            margin-top: -20px;
+        }
+        .live-now-text {
+            font-size: 36px;
+            font-weight: 900;
+            color: #033496;
+            line-height: 1;
+            margin: auto 0;
+        }
+
+        /* --- CAROUSEL DOTS --- */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 12px 0;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .dot.active {
+            background-color: #2874f0;
+            width: 18px;
+            border-radius: 4px;
+        }
+
+        /* Ad Tag Positioning */
+        .ad-tag {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a class="brand-tab brand-flipkart">
+                <i class="fa-solid fa-bolt"></i> Flipkart
+            </a>
+            <a class="brand-tab brand-travel">
+                <i class="fa-solid fa-plane"></i> Travel
+            </a>
+        </div>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" placeholder="Search for Products, Brands and More">
+        </div>
+
+        <div class="nav-right">
+            <div class="location-select">
+                <i class="fa-solid fa-location-dot"></i>
+                Location not set <span onclick="alert('Opening Location Selector...')">Select delivery location &gt;</span>
+            </div>
+            
+            <div class="nav-item">
+                <i class="fa-regular fa-circle-user"></i> Login <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                <div class="dropdown-menu">
+                    <a href="#"><i class="fa-regular fa-user"></i> My Profile</a>
+                    <a href="#"><i class="fa-solid fa-box"></i> Orders</a>
+                    <a href="#"><i class="fa-regular fa-heart"></i> Wishlist</a>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                More <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                <div class="dropdown-menu">
+                    <a href="#">Notification Preferences</a>
+                    <a href="#">24x7 Customer Care</a>
+                    <a href="#">Advertise</a>
+                </div>
+            </div>
+
+            <a class="nav-item" href="#">
+                <i class="fa-solid fa-cart-shopping"></i> Cart
+            </a>
+        </div>
+    </nav>
+
+    <div class="categories-container">
+        <div class="cat-item active">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-sparkles"></i></div>
+            <span>For You</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-shirt"></i></div>
+            <span>Fashion</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <span>Mobiles</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <span>Beauty</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-laptop"></i></div>
+            <span>Electronics</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-couch"></i></div>
+            <span>Home</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-tv"></i></div>
+            <span>Appliances</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-teddy-bear"></i></div>
+            <span>Toys, baby...</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-bowl-food"></i></div>
+            <span>Food & H...</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-helmet-safety"></i></div>
+            <span>Auto Acc...</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-motorcycle"></i></div>
+            <span>2 Wheele...</span>
+        </div>
+        <div class="cat-item">
+            <div class="cat-icon-wrapper"><i class="fa-solid fa-baseball-bat-ball"></i></div>
+            <span>Sports & ...</span>
+        </div>
+    </div>
+
+    <div class="main-banner">
+        <div class="banner-left">
+            <h1>Exclusive</h1>
+            <p>coupon for you!</p>
+        </div>
+
+        <div class="coupon-ticket">
+            <h2>Flat 10% Off</h2>
+            <p>Up to ₹100</p>
+            <div class="coupon-badge">Already applied</div>
+        </div>
+
+        <div class="banner-right-assets">
+            <svg class="asset-chair" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="45" r="30" fill="#e28c8c"/>
+                <rect x="30" y="45" width="40" height="25" rx="8" fill="#d07373"/>
+                <line x1="40" y1="70" x2="30" y2="95" stroke="#333" stroke-width="3"/>
+                <line x1="60" y1="70" x2="70" y2="95" stroke="#333" stroke-width="3"/>
+            </svg>
+            <svg class="asset-dumbbells" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="15" width="50" height="10" fill="#333"/>
+                <rect x="0" y="5" width="12" height="30" rx="4" fill="#111"/>
+                <rect x="48" y="5" width="12" height="30" rx="4" fill="#111"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="sub-banners-grid">
+        <div class="sub-card card-adidas">
+            <div class="card-content-overlay">
+                <div>
+                    <div class="brand-logo-white">adidas</div>
+                    <div class="offer-text-large" style="margin-top: 15px;">Wear the icon<br>Min. 40% Off</div>
+                    <div style="font-size: 13px; opacity: 0.9;">Step into style with ADIDAS</div>
+                </div>
+                <div class="partner-bank-tag">
+                    <strong>BOBCARD</strong> | <strong>HSBC</strong> 10% Instant Discount
+                </div>
+            </div>
+            <div class="ad-tag">AD</div>
+        </div>
+
+        <div class="sub-card card-phone">
+            <div class="phone-text-side">
+                <div class="epic-sale-badge">JUNE EPIC SALE</div>
+                <div class="phone-title">POVA 8 5G</div>
+                <div class="phone-launch-time">Launch today, 12 PM</div>
+                <div class="phone-sub">Here to delete normal</div>
+            </div>
+            <svg class="phone-image-side" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="90" height="170" rx="16" fill="#1a1a1a" stroke="#444" stroke-width="2"/>
+                <circle cx="50" cy="25" r="12" fill="#0d0d0d"/>
+                <circle cx="45" cy="25" r="4" fill="#222"/>
+                <circle cx="55" cy="21" r="3" fill="#222"/>
+            </svg>
+        </div>
+
+        <div class="sub-card card-sale-live">
+            <div class="live-banner-title">JUNE EPIC SALE</div>
+            <div class="live-now-text">LIVE<br>NOW</div>
+            <div class="partner-bank-tag" style="margin-bottom: 0; width: 90%; justify-content: center;">
+                <strong>BOBCARD</strong> | <strong>HSBC</strong> 10% Instant Discount
+            </div>
+        </div>
+    </div>
+
+    <div class="carousel-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <script>
+        // Simple visual script toggling dot selections manually
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                document.querySelector('.dot.active').classList.remove('active');
+                dot.classList.add('active');
+            });
+        });
+
+        // Simple click interaction for Category selector
+        const catItems = document.querySelectorAll('.cat-item');
+        catItems.forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelector('.cat-item.active').classList.remove('active');
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
