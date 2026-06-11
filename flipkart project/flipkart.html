@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flipkart Clone</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f1f3f6; color: #212121; }
+
+    /* ── NAVBAR ── */
+    .fk-nav {
+      background: #2874f0;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .fk-logo { display: flex; flex-direction: column; min-width: 80px; text-decoration: none; }
+    .fk-logo .logo-name { color: #fff; font-size: 22px; font-weight: 700; font-style: italic; letter-spacing: -0.5px; line-height: 1; }
+    .fk-logo .logo-tag  { color: #ffe500; font-size: 10px; font-style: italic; margin-top: 1px; }
+
+    .fk-search {
+      flex: 1;
+      max-width: 560px;
+      display: flex;
+      background: #fff;
+      border-radius: 2px;
+      overflow: hidden;
+      height: 36px;
+    }
+    .fk-search input  { flex: 1; border: none; outline: none; padding: 0 12px; font-size: 14px; color: #333; }
+    .fk-search button {
+      background: #ff9f00; border: none; width: 48px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .fk-search button i { color: #fff; font-size: 16px; }
+
+    .fk-nav-links { display: flex; gap: 24px; margin-left: auto; align-items: center; }
+    .fk-nav-links a {
+      color: #fff; font-size: 14px; font-weight: 500;
+      text-decoration: none; white-space: nowrap; cursor: pointer;
+    }
+    .fk-nav-links a:hover { opacity: .85; }
+
+    .fk-cart-btn {
+      display: flex; align-items: center; gap: 6px;
+      color: #fff; font-size: 14px; font-weight: 500;
+      cursor: pointer; position: relative;
+      background: none; border: none;
+    }
+    .fk-cart-btn i { font-size: 20px; }
+    .fk-cart-count {
+      background: #ff6161; color: #fff; border-radius: 50%;
+      width: 16px; height: 16px; font-size: 10px;
+      display: flex; align-items: center; justify-content: center;
+      position: absolute; top: -6px; right: -6px; font-weight: 700;
+    }
+
+    /* ── CATEGORY BAR ── */
+    .fk-cats {
+      background: #fff; padding: 0 24px;
+      display: flex; gap: 0; overflow-x: auto;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .fk-cats::-webkit-scrollbar { height: 0; }
+    .fk-cat {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 10px 20px; cursor: pointer; min-width: 80px;
+      border-bottom: 2px solid transparent; transition: border-color .15s;
+    }
+    .fk-cat:hover { border-bottom-color: #2874f0; }
+    .fk-cat .cat-icon { font-size: 28px; line-height: 1; }
+    .fk-cat span { font-size: 12px; font-weight: 500; color: #333; margin-top: 4px; white-space: nowrap; }
+
+    /* ── MAIN WRAPPER ── */
+    .fk-main { max-width: 1280px; margin: 0 auto; padding: 12px 16px; }
+
+    /* ── BANNER ── */
+    .fk-banner { border-radius: 4px; overflow: hidden; margin-bottom: 12px; position: relative; }
+    .fk-banner-inner {
+      height: 220px; display: flex;
+      align-items: center; justify-content: space-between;
+      padding: 24px 40px; border-radius: 4px;
+      background: linear-gradient(135deg, #2874f0, #0f59d1);
+      transition: background .4s;
+    }
+    .fk-banner-text h2  { color: #fff; font-size: 28px; font-weight: 700; }
+    .fk-banner-text p   { color: rgba(255,255,255,.8); font-size: 15px; margin-top: 6px; }
+    .fk-banner-btn {
+      display: inline-block; background: #ffe500; color: #333;
+      padding: 10px 28px; border-radius: 2px; font-weight: 700;
+      font-size: 14px; margin-top: 14px; cursor: pointer; border: none;
+    }
+    .fk-banner-icons { display: flex; gap: 20px; }
+    .fk-banner-icon {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fk-banner-icon i { color: #fff; font-size: 28px; }
+
+    .fk-nav-arrows {
+      position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      display: flex; justify-content: space-between;
+      width: 100%; padding: 0 8px; pointer-events: none;
+    }
+    .fk-arr {
+      width: 32px; height: 32px; background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; pointer-events: all;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+    .fk-arr i { color: #333; font-size: 14px; }
+
+    /* ── OFFER STRIP ── */
+    .fk-offers-strip {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 12px; margin-bottom: 12px;
+    }
+    .fk-offer-card {
+      background: #fff; border-radius: 4px; padding: 16px;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; cursor: pointer;
+    }
+    .fk-offer-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    .fk-offer-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fk-offer-card > span { font-size: 13px; font-weight: 600; color: #212121; text-align: center; }
+
+    /* ── SECTION ── */
+    .fk-section { background: #fff; border-radius: 4px; margin-bottom: 12px; padding: 16px; }
+    .fk-section-header {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 14px;
+    }
+    .fk-section-title    { font-size: 20px; font-weight: 700; color: #212121; }
+    .fk-section-subtitle { font-size: 13px; color: #2874f0; font-weight: 500; }
+    .fk-view-all {
+      background: #2874f0; color: #fff; border: none;
+      padding: 8px 20px; border-radius: 2px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .fk-view-all:hover { background: #1a65d6; }
+
+    /* ── PRODUCT GRID ── */
+    .fk-products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1px; background: #f0f0f0;
+    }
+    .fk-product {
+      background: #fff; padding: 16px 12px;
+      cursor: pointer; display: flex;
+      flex-direction: column; align-items: center;
+      transition: box-shadow .15s;
+    }
+    .fk-product:hover { box-shadow: 0 2px 12px rgba(0,0,0,.12); z-index: 1; position: relative; }
+    .fk-product .prod-emoji { font-size: 64px; line-height: 1; margin-bottom: 8px; }
+    .fk-product-name {
+      font-size: 13px; color: #212121; text-align: center;
+      margin-bottom: 4px; line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .fk-product-rating { display: flex; align-items: center; gap: 4px; margin: 4px 0; }
+    .fk-rating-badge {
+      background: #388e3c; color: #fff; font-size: 11px;
+      padding: 2px 6px; border-radius: 2px;
+      display: flex; align-items: center; gap: 2px;
+    }
+    .fk-rating-count { font-size: 11px; color: #878787; }
+    .fk-product-prices {
+      display: flex; align-items: baseline;
+      flex-wrap: wrap; justify-content: center; gap: 2px;
+    }
+    .fk-product-price { font-size: 14px; font-weight: 700; color: #212121; }
+    .fk-product-old   { font-size: 12px; color: #878787; text-decoration: line-through; }
+    .fk-product-off   { font-size: 12px; color: #388e3c; font-weight: 600; }
+    .fk-add-cart {
+      background: #ff9f00; color: #fff; border: none;
+      padding: 7px 18px; border-radius: 2px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      margin-top: 8px; width: 100%; transition: background .15s;
+    }
+    .fk-add-cart:hover { background: #e8930a; }
+
+    /* ── CART PANEL ── */
+    .fk-cart-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.4); z-index: 200;
+    }
+    .fk-cart-panel {
+      position: fixed; right: 0; top: 0; bottom: 0; width: 360px;
+      background: #fff; z-index: 201;
+      display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform .25s;
+    }
+    .fk-cart-open .fk-cart-overlay { display: block; }
+    .fk-cart-open .fk-cart-panel   { transform: translateX(0); }
+
+    .fk-cart-head {
+      background: #2874f0; padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .fk-cart-head span { color: #fff; font-size: 18px; font-weight: 700; }
+    .fk-cart-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 20px; }
+
+    .fk-cart-items { flex: 1; overflow-y: auto; padding: 12px; }
+    .fk-cart-empty {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 100%; color: #878787; font-size: 15px; gap: 10px;
+    }
+    .fk-cart-empty i { font-size: 48px; color: #d0d0d0; }
+
+    .fk-cart-item {
+      display: flex; gap: 12px; padding: 12px;
+      border-bottom: 1px solid #f0f0f0; align-items: center;
+    }
+    .fk-cart-item .ci-emoji { font-size: 40px; }
+    .fk-cart-item-info { flex: 1; }
+    .fk-cart-item-name  { font-size: 13px; color: #212121; line-height: 1.4; }
+    .fk-cart-item-price { font-size: 14px; font-weight: 700; color: #212121; margin-top: 2px; }
+    .fk-cart-remove {
+      background: none; border: none;
+      color: #878787; cursor: pointer; font-size: 16px; padding: 4px;
+    }
+    .fk-cart-remove:hover { color: #e53935; }
+
+    .fk-cart-footer { padding: 16px 20px; border-top: 1px solid #e0e0e0; }
+    .fk-cart-total {
+      display: flex; justify-content: space-between;
+      font-size: 16px; font-weight: 700; margin-bottom: 12px;
+    }
+    .fk-checkout-btn {
+      width: 100%; background: #fb641b; color: #fff; border: none;
+      padding: 14px; font-size: 16px; font-weight: 700;
+      cursor: pointer; border-radius: 2px;
+    }
+    .fk-checkout-btn:hover { background: #e05a17; }
+
+    /* ── TOAST ── */
+    .fk-toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      background: #323232; color: #fff;
+      padding: 12px 24px; border-radius: 4px;
+      font-size: 14px; z-index: 300;
+      opacity: 0; transition: opacity .3s; pointer-events: none;
+    }
+    .fk-toast.show { opacity: 1; }
+
+    /* ── FOOTER ── */
+    .fk-footer { background: #172337; padding: 32px 24px 20px; margin-top: 12px; }
+    .fk-footer-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 24px; margin-bottom: 24px;
+    }
+    .fk-footer-col h4 {
+      color: #878787; font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px;
+    }
+    .fk-footer-col a {
+      display: block; color: #fff; font-size: 13px;
+      margin-bottom: 8px; text-decoration: none; opacity: .75; cursor: pointer;
+    }
+    .fk-footer-col a:hover { opacity: 1; }
+    .fk-footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1); padding-top: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fk-footer-bottom span { color: rgba(255,255,255,.5); font-size: 12px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .fk-nav { padding: 0 12px; gap: 10px; }
+      .fk-nav-links { display: none; }
+      .fk-offers-strip { grid-template-columns: repeat(2,1fr); }
+      .fk-footer-grid  { grid-template-columns: repeat(2,1fr); }
+      .fk-banner-inner { padding: 20px 20px; }
+      .fk-banner-text h2 { font-size: 20px; }
+      .fk-banner-icons { display: none; }
+      .fk-cart-panel { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ════ NAVBAR ════ -->
+  <nav class="fk-nav">
+    <a class="fk-logo" href="#">
+      <span class="logo-name">Flipkart</span>
+      <span class="logo-tag">Explore <b>Plus</b> ⭐</span>
+    </a>
+
+    <div class="fk-search">
+      <input type="text" id="searchInput" placeholder="Search for products, brands and more" />
+      <button onclick="doSearch()" aria-label="Search">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+    <div class="fk-nav-links">
+      <a href="#">Login</a>
+      <a href="#">Become a Seller</a>
+      <a href="#">More ▾</a>
+      <button class="fk-cart-btn" onclick="toggleCart()" aria-label="Open cart">
+        <i class="fas fa-shopping-cart"></i>
+        Cart
+        <span class="fk-cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ════ CATEGORY BAR ════ -->
+  <div class="fk-cats">
+    <div class="fk-cat"><span class="cat-icon">📱</span><span>Mobiles</span></div>
+    <div class="fk-cat"><span class="cat-icon">🏠</span><span>Home</span></div>
+    <div class="fk-cat"><span class="cat-icon">👗</span><span>Fashion</span></div>
+    <div class="fk-cat"><span class="cat-icon">⚡</span><span>Electronics</span></div>
+    <div class="fk-cat"><span class="cat-icon">✈️</span><span>Travel</span></div>
+    <div class="fk-cat"><span class="cat-icon">💄</span><span>Beauty</span></div>
+    <div class="fk-cat"><span class="cat-icon">🛒</span><span>Grocery</span></div>
+    <div class="fk-cat"><span class="cat-icon">🧸</span><span>Toys</span></div>
+    <div class="fk-cat"><span class="cat-icon">🔧</span><span>Tools</span></div>
+    <div class="fk-cat"><span class="cat-icon">🎮</span><span>Gaming</span></div>
+    <div class="fk-cat"><span class="cat-icon">📚</span><span>Books</span></div>
+    <div class="fk-cat"><span class="cat-icon">🐾</span><span>Pet Care</span></div>
+  </div>
+
+  <!-- ════ MAIN ════ -->
+  <div class="fk-main">
+
+    <!-- HERO BANNER -->
+    <div class="fk-banner">
+      <div class="fk-banner-inner" id="bannerEl">
+        <div class="fk-banner-text">
+          <h2 id="bannerTitle">Big Billion Days Sale</h2>
+          <p  id="bannerSub">Up to 80% off on Electronics, Fashion &amp; More</p>
+          <button class="fk-banner-btn">Shop Now</button>
+        </div>
+        <div class="fk-banner-icons" id="bannerIcons">
+          <div class="fk-banner-icon"><i class="fas fa-mobile-alt"></i></div>
+          <div class="fk-banner-icon"><i class="fas fa-headphones"></i></div>
+          <div class="fk-banner-icon"><i class="fas fa-camera"></i></div>
+        </div>
+      </div>
+      <div class="fk-nav-arrows">
+        <div class="fk-arr" onclick="prevBanner()" role="button" aria-label="Previous banner"><i class="fas fa-chevron-left"></i></div>
+        <div class="fk-arr" onclick="nextBanner()" role="button" aria-label="Next banner"><i class="fas fa-chevron-right"></i></div>
+      </div>
+    </div>
+
+    <!-- OFFER STRIP -->
+    <div class="fk-offers-strip">
+      <div class="fk-offer-card">
+        <div class="fk-offer-icon" style="background:#fff3e0"><i class="fas fa-truck" style="color:#ff9f00;font-size:20px"></i></div>
+        <span>Free Delivery above ₹499</span>
+      </div>
+      <div class="fk-offer-card">
+        <div class="fk-offer-icon" style="background:#e8f5e9"><i class="fas fa-undo-alt" style="color:#388e3c;font-size:20px"></i></div>
+        <span>10-Day Easy Returns</span>
+      </div>
+      <div class="fk-offer-card">
+        <div class="fk-offer-icon" style="background:#e3f2fd"><i class="fas fa-credit-card" style="color:#1565c0;font-size:20px"></i></div>
+        <span>10% off on HDFC Cards</span>
+      </div>
+      <div class="fk-offer-card">
+        <div class="fk-offer-icon" style="background:#fce4ec"><i class="fas fa-shield-alt" style="color:#c62828;font-size:20px"></i></div>
+        <span>Secure Payments</span>
+      </div>
+    </div>
+
+    <!-- DEALS OF THE DAY -->
+    <div class="fk-section">
+      <div class="fk-section-header">
+        <div>
+          <div class="fk-section-title">Deals of the Day</div>
+          <div class="fk-section-subtitle">⏰ Limited Time Offers</div>
+        </div>
+        <button class="fk-view-all">VIEW ALL</button>
+      </div>
+      <div class="fk-products" id="dealsGrid"></div>
+    </div>
+
+    <!-- ELECTRONICS -->
+    <div class="fk-section">
+      <div class="fk-section-header">
+        <div class="fk-section-title">Best of Electronics</div>
+        <button class="fk-view-all">VIEW ALL</button>
+      </div>
+      <div class="fk-products" id="electronicsGrid"></div>
+    </div>
+
+    <!-- FASHION -->
+    <div class="fk-section">
+      <div class="fk-section-header">
+        <div class="fk-section-title">Top Picks in Fashion</div>
+        <button class="fk-view-all">VIEW ALL</button>
+      </div>
+      <div class="fk-products" id="fashionGrid"></div>
+    </div>
+
+  </div><!-- /.fk-main -->
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="fk-footer">
+    <div class="fk-footer-grid">
+      <div class="fk-footer-col">
+        <h4>About</h4>
+        <a href="#">Contact Us</a>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Press</a>
+        <a href="#">Corporate Info</a>
+      </div>
+      <div class="fk-footer-col">
+        <h4>Help</h4>
+        <a href="#">Payments</a>
+        <a href="#">Shipping</a>
+        <a href="#">Cancellation &amp; Returns</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div class="fk-footer-col">
+        <h4>Policy</h4>
+        <a href="#">Return Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Privacy</a>
+        <a href="#">Sitemap</a>
+      </div>
+      <div class="fk-footer-col">
+        <h4>Social</h4>
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">YouTube</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <div class="fk-footer-bottom">
+      <span>© 2024 Flipkart Clone — Built with HTML, CSS &amp; JavaScript</span>
+    </div>
+  </footer>
+
+  <!-- ════ CART OVERLAY + PANEL ════ -->
+  <div class="fk-cart-overlay" onclick="toggleCart()"></div>
+  <div class="fk-cart-panel" role="dialog" aria-label="Shopping cart">
+    <div class="fk-cart-head">
+      <span>My Cart (<span id="cartItemCount">0</span>)</span>
+      <button class="fk-cart-close" onclick="toggleCart()" aria-label="Close cart">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="fk-cart-items" id="cartItems">
+      <div class="fk-cart-empty">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Your cart is empty</span>
+      </div>
+    </div>
+    <div class="fk-cart-footer" id="cartFooter" style="display:none">
+      <div class="fk-cart-total">
+        <span>Total Amount</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="fk-checkout-btn" onclick="placeOrder()">PLACE ORDER</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="fk-toast" id="toast" role="status" aria-live="polite"></div>
+
+</div><!-- /#app -->
+
+<script>
+  /* ── DATA ── */
+  const products = {
+    deals: [
+      { id:1,  name:"Samsung Galaxy M14 5G (4GB/64GB)",       price:10999, old:18999, off:42, emoji:"📱", rating:4.3, reviews:12450 },
+      { id:2,  name:"boAt Rockerz 450 Bluetooth Headphone",   price:999,   old:2990,  off:66, emoji:"🎧", rating:4.2, reviews:8820  },
+      { id:3,  name:"HP 15s Laptop Intel Core i5 8GB RAM",    price:44990, old:62990, off:28, emoji:"💻", rating:4.4, reviews:3210  },
+      { id:4,  name:"Fossil Gen 6 Smartwatch",                price:14995, old:22995, off:34, emoji:"⌚", rating:4.1, reviews:2130  },
+      { id:5,  name:"Canon EOS 1500D DSLR Camera",            price:31990, old:44999, off:28, emoji:"📷", rating:4.5, reviews:5670  },
+      { id:6,  name:"Mi 65W Fast Charger Adapter",            price:799,   old:1299,  off:38, emoji:"🔌", rating:4.3, reviews:9100  },
+      { id:7,  name:"Fire-Boltt Phoenix Smart Watch",         price:1499,  old:4999,  off:69, emoji:"⌚", rating:4.0, reviews:15000 },
+      { id:8,  name:"Noise ColorFit Pro 5 Smartwatch",        price:2999,  old:7999,  off:62, emoji:"⌚", rating:4.2, reviews:11200 },
+    ],
+    electronics: [
+      { id:9,  name:"Sony WH-1000XM5 Noise Cancelling",       price:26990, old:34990, off:22, emoji:"🎧", rating:4.6, reviews:4320  },
+      { id:10, name:"OnePlus Nord CE 3 Lite 5G",              price:19999, old:24999, off:20, emoji:"📱", rating:4.3, reviews:7650  },
+      { id:11, name:"LG 32 Inch Full HD Smart TV",            price:18990, old:27990, off:32, emoji:"📺", rating:4.2, reviews:3210  },
+      { id:12, name:"Acer Aspire 7 AMD Ryzen 5 Gaming",       price:54990, old:74990, off:26, emoji:"💻", rating:4.4, reviews:2980  },
+      { id:13, name:"JBL Flip 6 Portable Bluetooth Speaker",  price:9999,  old:13999, off:28, emoji:"🔊", rating:4.5, reviews:6540  },
+      { id:14, name:"Redmi Note 13 Pro 5G 8GB/256GB",         price:26999, old:34999, off:22, emoji:"📱", rating:4.4, reviews:8870  },
+      { id:15, name:"Apple AirPods 3rd Generation",           price:14900, old:18900, off:21, emoji:"🎵", rating:4.7, reviews:9210  },
+      { id:16, name:"GoPro HERO12 Black Action Camera",       price:38000, old:44500, off:14, emoji:"📷", rating:4.5, reviews:1890  },
+    ],
+    fashion: [
+      { id:17, name:"Levi's Men's Slim Fit Jeans",            price:1499,  old:2999,  off:50, emoji:"👖", rating:4.3, reviews:22100 },
+      { id:18, name:"Nike Air Max 270 Men's Running Shoes",   price:7995,  old:11995, off:33, emoji:"👟", rating:4.4, reviews:5670  },
+      { id:19, name:"Mango Women's Floral Midi Dress",        price:2499,  old:4999,  off:50, emoji:"👗", rating:4.2, reviews:3450  },
+      { id:20, name:"Ray-Ban Aviator Sunglasses Classic",     price:3990,  old:6590,  off:39, emoji:"🕶️", rating:4.6, reviews:8900  },
+      { id:21, name:"Allen Solly Men's Formal Shirt",         price:899,   old:1799,  off:50, emoji:"👔", rating:4.1, reviews:12300 },
+      { id:22, name:"Lakme 9to5 Primer + Matte Foundation",  price:449,   old:899,   off:50, emoji:"💄", rating:4.3, reviews:17800 },
+      { id:23, name:"Casio G-Shock Analog-Digital Watch",     price:4995,  old:7995,  off:37, emoji:"⌚", rating:4.5, reviews:6700  },
+      { id:24, name:"Peter England Men's Chino Trousers",     price:1199,  old:2299,  off:47, emoji:"👕", rating:4.2, reviews:9800  },
+    ]
+  };
+
+  /* ── BANNERS ── */
+  const banners = [
+    {
+      title: 'Big Billion Days Sale',
+      sub:   'Up to 80% off on Electronics, Fashion &amp; More',
+      bg:    'linear-gradient(135deg,#2874f0,#0f59d1)',
+      icons: ['fa-mobile-alt','fa-headphones','fa-camera']
+    },
+    {
+      title: 'Grocery Fest',
+      sub:   'Fresh deals on daily essentials — Free delivery above ₹299',
+      bg:    'linear-gradient(135deg,#388e3c,#1b5e20)',
+      icons: ['fa-leaf','fa-shopping-basket','fa-truck']
+    },
+    {
+      title: 'Fashion Week',
+      sub:   'Top brands up to 70% off — Hurry, limited stock!',
+      bg:    'linear-gradient(135deg,#e91e63,#880e4f)',
+      icons: ['fa-tshirt','fa-heart','fa-star']
+    }
+  ];
+  let bannerIdx = 0;
+
+  function applyBanner(b) {
+    document.getElementById('bannerEl').style.background = b.bg;
+    document.getElementById('bannerTitle').textContent   = b.title;
+    document.getElementById('bannerSub').innerHTML       = b.sub;
+    document.getElementById('bannerIcons').innerHTML = b.icons.map(ic =>
+      `<div class="fk-banner-icon"><i class="fas ${ic}"></i></div>`
+    ).join('');
+  }
+  function nextBanner() { bannerIdx = (bannerIdx + 1) % banners.length; applyBanner(banners[bannerIdx]); }
+  function prevBanner() { bannerIdx = (bannerIdx - 1 + banners.length) % banners.length; applyBanner(banners[bannerIdx]); }
+  setInterval(nextBanner, 4000);
+
+  /* ── CART STATE ── */
+  let cart = [];
+
+  /* ── RENDER PRODUCTS ── */
+  function renderProducts(containerId, items) {
+    document.getElementById(containerId).innerHTML = items.map(p => `
+      <div class="fk-product">
+        <div class="prod-emoji">${p.emoji}</div>
+        <div class="fk-product-name">${p.name}</div>
+        <div class="fk-product-rating">
+          <span class="fk-rating-badge">${p.rating} <i class="fas fa-star" style="font-size:9px"></i></span>
+          <span class="fk-rating-count">(${p.reviews.toLocaleString('en-IN')})</span>
+        </div>
+        <div class="fk-product-prices">
+          <span class="fk-product-price">₹${p.price.toLocaleString('en-IN')}</span>
+          <span class="fk-product-old">₹${p.old.toLocaleString('en-IN')}</span>
+          <span class="fk-product-off">${p.off}% off</span>
+        </div>
+        <button class="fk-add-cart" onclick="addToCart(${p.id})">ADD TO CART</button>
+      </div>
+    `).join('');
+  }
+
+  /* ── CART FUNCTIONS ── */
+  function getAllProducts() {
+    return [...products.deals, ...products.electronics, ...products.fashion];
+  }
+
+  function addToCart(id) {
+    const p = getAllProducts().find(x => x.id === id);
+    const existing = cart.find(x => x.id === id);
+    if (existing) existing.qty++;
+    else cart.push({ ...p, qty: 1 });
+    updateCartUI();
+    showToast(`${p.emoji} "${p.name.substring(0,28)}..." added to cart!`);
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(x => x.id !== id);
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const totalCount = cart.reduce((s, x) => s + x.qty, 0);
+    document.getElementById('cartCount').textContent     = totalCount;
+    document.getElementById('cartItemCount').textContent = totalCount;
+
+    const itemsEl  = document.getElementById('cartItems');
+    const footerEl = document.getElementById('cartFooter');
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = `
+        <div class="fk-cart-empty">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Your cart is empty</span>
+        </div>`;
+      footerEl.style.display = 'none';
+    } else {
+      itemsEl.innerHTML = cart.map(p => `
+        <div class="fk-cart-item">
+          <div class="ci-emoji">${p.emoji}</div>
+          <div class="fk-cart-item-info">
+            <div class="fk-cart-item-name">${p.name}</div>
+            <div class="fk-cart-item-price">
+              ₹${p.price.toLocaleString('en-IN')} × ${p.qty}
+              = ₹${(p.price * p.qty).toLocaleString('en-IN')}
+            </div>
+          </div>
+          <button class="fk-cart-remove" onclick="removeFromCart(${p.id})" aria-label="Remove item">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `).join('');
+      const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+      document.getElementById('cartTotal').textContent = '₹' + total.toLocaleString('en-IN');
+      footerEl.style.display = 'block';
+    }
+  }
+
+  function toggleCart() {
+    document.getElementById('app').classList.toggle('fk-cart-open');
+  }
+
+  function placeOrder() {
+    cart = [];
+    updateCartUI();
+    toggleCart();
+    showToast('🎉 Order placed successfully! Thank you for shopping.');
+  }
+
+  /* ── SEARCH ── */
+  function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) showToast(`🔍 Searching for "${q}"...`);
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  /* ── TOAST ── */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  /* ── INIT ── */
+  renderProducts('dealsGrid',       products.deals);
+  renderProducts('electronicsGrid', products.electronics);
+  renderProducts('fashionGrid',     products.fashion);
+</script>
+</body>
+</html>
